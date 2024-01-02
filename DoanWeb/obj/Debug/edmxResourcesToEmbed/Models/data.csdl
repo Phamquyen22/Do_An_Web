@@ -1,0 +1,308 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="data" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="Categories">
+    <Key>
+      <PropertyRef Name="cateID" />
+    </Key>
+    <Property Name="cateID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="cateName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="catePhoto" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="ProductTypes" Relationship="Self.FK__ProductTy__cateI__4E88ABD4" FromRole="Categories" ToRole="ProductTypes" />
+  </EntityType>
+  <EntityType Name="Comments">
+    <Key>
+      <PropertyRef Name="commentID" />
+    </Key>
+    <Property Name="commentID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="proID" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="commentMessage" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="Products" Relationship="Self.FK__Comments__proID__48CFD27E" FromRole="Comments" ToRole="Products" />
+  </EntityType>
+  <EntityType Name="Customers">
+    <Key>
+      <PropertyRef Name="cusPhone" />
+    </Key>
+    <Property Name="cusPhone" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="cusFullName" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="cusEmail" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="cusAddress" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="Orders" Relationship="Self.FK__Orders__cusPhone__4BAC3F29" FromRole="Customers" ToRole="Orders" />
+  </EntityType>
+  <EntityType Name="OrderDetails">
+    <Key>
+      <PropertyRef Name="orderID" />
+      <PropertyRef Name="proID" />
+    </Key>
+    <Property Name="orderID" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="proID" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="ordtsQuantity" Type="Int32" />
+    <Property Name="ordtsThanhTien" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="Orders" Relationship="Self.FK__OrderDeta__order__49C3F6B7" FromRole="OrderDetails" ToRole="Orders" />
+    <NavigationProperty Name="Products" Relationship="Self.FK__OrderDeta__proID__4AB81AF0" FromRole="OrderDetails" ToRole="Products" />
+  </EntityType>
+  <EntityType Name="Orders">
+    <Key>
+      <PropertyRef Name="orderID" />
+    </Key>
+    <Property Name="orderID" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="cusPhone" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="orderMessage" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="orderDateTime" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="orderStatus" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="id_user" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="Customers" Relationship="Self.FK__Orders__cusPhone__4BAC3F29" FromRole="Orders" ToRole="Customers" />
+    <NavigationProperty Name="OrderDetails" Relationship="Self.FK__OrderDeta__order__49C3F6B7" FromRole="Orders" ToRole="OrderDetails" />
+    <NavigationProperty Name="User_role" Relationship="Self.FK_Orders_User_role" FromRole="Orders" ToRole="User_role" />
+  </EntityType>
+  <EntityType Name="Producers">
+    <Key>
+      <PropertyRef Name="pdcID" />
+    </Key>
+    <Property Name="pdcID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="pdcName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="pdcPhone" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="pdcEmail" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="pdcAddress" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="pdcPhoto" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="pdcInfo" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="Products" Relationship="Self.FK__Products__pdcID__4CA06362" FromRole="Producers" ToRole="Products" />
+  </EntityType>
+  <EntityType Name="Products">
+    <Key>
+      <PropertyRef Name="proID" />
+    </Key>
+    <Property Name="proID" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="pdcID" Type="Int32" />
+    <Property Name="typeID" Type="Int32" />
+    <Property Name="proName" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="proSize" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+    <Property Name="proPrice" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+    <Property Name="proDiscount" Type="Int32" />
+    <Property Name="proPhoto" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="proUpdateDate" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="proDescription" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="proQuantity" Type="Int32" />
+    <NavigationProperty Name="Comments" Relationship="Self.FK__Comments__proID__48CFD27E" FromRole="Products" ToRole="Comments" />
+    <NavigationProperty Name="OrderDetails" Relationship="Self.FK__OrderDeta__proID__4AB81AF0" FromRole="Products" ToRole="OrderDetails" />
+    <NavigationProperty Name="Producers" Relationship="Self.FK__Products__pdcID__4CA06362" FromRole="Products" ToRole="Producers" />
+    <NavigationProperty Name="ProductTypes" Relationship="Self.FK__Products__typeID__4D94879B" FromRole="Products" ToRole="ProductTypes" />
+    <NavigationProperty Name="Rates" Relationship="Self.FK__Rates__proID__4F7CD00D" FromRole="Products" ToRole="Rates" />
+  </EntityType>
+  <EntityType Name="ProductTypes">
+    <Key>
+      <PropertyRef Name="typeID" />
+    </Key>
+    <Property Name="typeID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="cateID" Type="Int32" />
+    <Property Name="typeName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="Categories" Relationship="Self.FK__ProductTy__cateI__4E88ABD4" FromRole="ProductTypes" ToRole="Categories" />
+    <NavigationProperty Name="Products" Relationship="Self.FK__Products__typeID__4D94879B" FromRole="ProductTypes" ToRole="Products" />
+  </EntityType>
+  <EntityType Name="Rates">
+    <Key>
+      <PropertyRef Name="proID" />
+    </Key>
+    <Property Name="proID" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="rateStar" Type="Int32" />
+    <NavigationProperty Name="Products" Relationship="Self.FK__Rates__proID__4F7CD00D" FromRole="Rates" ToRole="Products" />
+  </EntityType>
+  <EntityType Name="Sessions">
+    <Key>
+      <PropertyRef Name="id_session" />
+    </Key>
+    <Property Name="id_session" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="id_user" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="ses" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="timeout" Type="Int32" />
+    <NavigationProperty Name="User_role" Relationship="Self.FK_Session_User_role" FromRole="Sessions" ToRole="User_role" />
+  </EntityType>
+  <EntityType Name="User_role">
+    <Key>
+      <PropertyRef Name="id_user" />
+    </Key>
+    <Property Name="id_user" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="tk" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="mk" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="role" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="img" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="address" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="phone" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="lock" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="Orders" Relationship="Self.FK_Orders_User_role" FromRole="User_role" ToRole="Orders" />
+    <NavigationProperty Name="Sessions" Relationship="Self.FK_Session_User_role" FromRole="User_role" ToRole="Sessions" />
+  </EntityType>
+  <Association Name="FK__ProductTy__cateI__4E88ABD4">
+    <End Role="Categories" Type="Self.Categories" Multiplicity="0..1" />
+    <End Role="ProductTypes" Type="Self.ProductTypes" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Categories">
+        <PropertyRef Name="cateID" />
+      </Principal>
+      <Dependent Role="ProductTypes">
+        <PropertyRef Name="cateID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Comments__proID__48CFD27E">
+    <End Role="Products" Type="Self.Products" Multiplicity="0..1" />
+    <End Role="Comments" Type="Self.Comments" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Products">
+        <PropertyRef Name="proID" />
+      </Principal>
+      <Dependent Role="Comments">
+        <PropertyRef Name="proID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Orders__cusPhone__4BAC3F29">
+    <End Role="Customers" Type="Self.Customers" Multiplicity="0..1" />
+    <End Role="Orders" Type="Self.Orders" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Customers">
+        <PropertyRef Name="cusPhone" />
+      </Principal>
+      <Dependent Role="Orders">
+        <PropertyRef Name="cusPhone" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__OrderDeta__order__49C3F6B7">
+    <End Role="Orders" Type="Self.Orders" Multiplicity="1" />
+    <End Role="OrderDetails" Type="Self.OrderDetails" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Orders">
+        <PropertyRef Name="orderID" />
+      </Principal>
+      <Dependent Role="OrderDetails">
+        <PropertyRef Name="orderID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__OrderDeta__proID__4AB81AF0">
+    <End Role="Products" Type="Self.Products" Multiplicity="1" />
+    <End Role="OrderDetails" Type="Self.OrderDetails" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Products">
+        <PropertyRef Name="proID" />
+      </Principal>
+      <Dependent Role="OrderDetails">
+        <PropertyRef Name="proID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Orders_User_role">
+    <End Role="User_role" Type="Self.User_role" Multiplicity="0..1" />
+    <End Role="Orders" Type="Self.Orders" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User_role">
+        <PropertyRef Name="id_user" />
+      </Principal>
+      <Dependent Role="Orders">
+        <PropertyRef Name="id_user" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Products__pdcID__4CA06362">
+    <End Role="Producers" Type="Self.Producers" Multiplicity="0..1" />
+    <End Role="Products" Type="Self.Products" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Producers">
+        <PropertyRef Name="pdcID" />
+      </Principal>
+      <Dependent Role="Products">
+        <PropertyRef Name="pdcID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Products__typeID__4D94879B">
+    <End Role="ProductTypes" Type="Self.ProductTypes" Multiplicity="0..1" />
+    <End Role="Products" Type="Self.Products" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ProductTypes">
+        <PropertyRef Name="typeID" />
+      </Principal>
+      <Dependent Role="Products">
+        <PropertyRef Name="typeID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Rates__proID__4F7CD00D">
+    <End Role="Products" Type="Self.Products" Multiplicity="1" />
+    <End Role="Rates" Type="Self.Rates" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="Products">
+        <PropertyRef Name="proID" />
+      </Principal>
+      <Dependent Role="Rates">
+        <PropertyRef Name="proID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Session_User_role">
+    <End Role="User_role" Type="Self.User_role" Multiplicity="0..1" />
+    <End Role="Sessions" Type="Self.Sessions" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User_role">
+        <PropertyRef Name="id_user" />
+      </Principal>
+      <Dependent Role="Sessions">
+        <PropertyRef Name="id_user" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="ShopperEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Categories" EntityType="Self.Categories" />
+    <EntitySet Name="Comments" EntityType="Self.Comments" />
+    <EntitySet Name="Customers" EntityType="Self.Customers" />
+    <EntitySet Name="OrderDetails" EntityType="Self.OrderDetails" />
+    <EntitySet Name="Orders" EntityType="Self.Orders" />
+    <EntitySet Name="Producers" EntityType="Self.Producers" />
+    <EntitySet Name="Products" EntityType="Self.Products" />
+    <EntitySet Name="ProductTypes" EntityType="Self.ProductTypes" />
+    <EntitySet Name="Rates" EntityType="Self.Rates" />
+    <EntitySet Name="Sessions" EntityType="Self.Sessions" />
+    <EntitySet Name="User_role" EntityType="Self.User_role" />
+    <AssociationSet Name="FK__ProductTy__cateI__4E88ABD4" Association="Self.FK__ProductTy__cateI__4E88ABD4">
+      <End Role="Categories" EntitySet="Categories" />
+      <End Role="ProductTypes" EntitySet="ProductTypes" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Comments__proID__48CFD27E" Association="Self.FK__Comments__proID__48CFD27E">
+      <End Role="Products" EntitySet="Products" />
+      <End Role="Comments" EntitySet="Comments" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Orders__cusPhone__4BAC3F29" Association="Self.FK__Orders__cusPhone__4BAC3F29">
+      <End Role="Customers" EntitySet="Customers" />
+      <End Role="Orders" EntitySet="Orders" />
+    </AssociationSet>
+    <AssociationSet Name="FK__OrderDeta__order__49C3F6B7" Association="Self.FK__OrderDeta__order__49C3F6B7">
+      <End Role="Orders" EntitySet="Orders" />
+      <End Role="OrderDetails" EntitySet="OrderDetails" />
+    </AssociationSet>
+    <AssociationSet Name="FK__OrderDeta__proID__4AB81AF0" Association="Self.FK__OrderDeta__proID__4AB81AF0">
+      <End Role="Products" EntitySet="Products" />
+      <End Role="OrderDetails" EntitySet="OrderDetails" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Orders_User_role" Association="Self.FK_Orders_User_role">
+      <End Role="User_role" EntitySet="User_role" />
+      <End Role="Orders" EntitySet="Orders" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Products__pdcID__4CA06362" Association="Self.FK__Products__pdcID__4CA06362">
+      <End Role="Producers" EntitySet="Producers" />
+      <End Role="Products" EntitySet="Products" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Products__typeID__4D94879B" Association="Self.FK__Products__typeID__4D94879B">
+      <End Role="ProductTypes" EntitySet="ProductTypes" />
+      <End Role="Products" EntitySet="Products" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Rates__proID__4F7CD00D" Association="Self.FK__Rates__proID__4F7CD00D">
+      <End Role="Products" EntitySet="Products" />
+      <End Role="Rates" EntitySet="Rates" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Session_User_role" Association="Self.FK_Session_User_role">
+      <End Role="User_role" EntitySet="User_role" />
+      <End Role="Sessions" EntitySet="Sessions" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

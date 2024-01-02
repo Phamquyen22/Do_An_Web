@@ -1,0 +1,288 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="data.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="Categories">
+    <Key>
+      <PropertyRef Name="cateID" />
+    </Key>
+    <Property Name="cateID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="cateName" Type="nvarchar" MaxLength="100" />
+    <Property Name="catePhoto" Type="nvarchar(max)" />
+  </EntityType>
+  <EntityType Name="Comments">
+    <Key>
+      <PropertyRef Name="commentID" />
+    </Key>
+    <Property Name="commentID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="proID" Type="varchar" MaxLength="50" />
+    <Property Name="commentMessage" Type="nvarchar(max)" />
+  </EntityType>
+  <EntityType Name="Customers">
+    <Key>
+      <PropertyRef Name="cusPhone" />
+    </Key>
+    <Property Name="cusPhone" Type="varchar" MaxLength="20" Nullable="false" />
+    <Property Name="cusFullName" Type="nvarchar" MaxLength="200" />
+    <Property Name="cusEmail" Type="varchar" MaxLength="100" />
+    <Property Name="cusAddress" Type="nvarchar" MaxLength="500" />
+  </EntityType>
+  <EntityType Name="OrderDetails">
+    <Key>
+      <PropertyRef Name="orderID" />
+      <PropertyRef Name="proID" />
+    </Key>
+    <Property Name="orderID" Type="varchar" MaxLength="20" Nullable="false" />
+    <Property Name="proID" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="ordtsQuantity" Type="int" />
+    <Property Name="ordtsThanhTien" Type="varchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="Orders">
+    <Key>
+      <PropertyRef Name="orderID" />
+    </Key>
+    <Property Name="orderID" Type="varchar" MaxLength="20" Nullable="false" />
+    <Property Name="cusPhone" Type="varchar" MaxLength="20" />
+    <Property Name="orderMessage" Type="nvarchar(max)" />
+    <Property Name="orderDateTime" Type="varchar" MaxLength="50" />
+    <Property Name="orderStatus" Type="nvarchar" MaxLength="50" />
+    <Property Name="id_user" Type="nvarchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="Producers">
+    <Key>
+      <PropertyRef Name="pdcID" />
+    </Key>
+    <Property Name="pdcID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="pdcName" Type="nvarchar" MaxLength="100" />
+    <Property Name="pdcPhone" Type="varchar" MaxLength="20" />
+    <Property Name="pdcEmail" Type="varchar" MaxLength="50" />
+    <Property Name="pdcAddress" Type="nvarchar(max)" />
+    <Property Name="pdcPhoto" Type="nvarchar(max)" />
+    <Property Name="pdcInfo" Type="nvarchar(max)" />
+  </EntityType>
+  <EntityType Name="Products">
+    <Key>
+      <PropertyRef Name="proID" />
+    </Key>
+    <Property Name="proID" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="pdcID" Type="int" />
+    <Property Name="typeID" Type="int" />
+    <Property Name="proName" Type="nvarchar" MaxLength="200" />
+    <Property Name="proSize" Type="varchar" MaxLength="10" />
+    <Property Name="proPrice" Type="varchar" MaxLength="10" />
+    <Property Name="proDiscount" Type="int" />
+    <Property Name="proPhoto" Type="nvarchar(max)" />
+    <Property Name="proUpdateDate" Type="varchar" MaxLength="50" />
+    <Property Name="proDescription" Type="nvarchar(max)" />
+    <Property Name="proQuantity" Type="int" />
+  </EntityType>
+  <EntityType Name="ProductTypes">
+    <Key>
+      <PropertyRef Name="typeID" />
+    </Key>
+    <Property Name="typeID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="cateID" Type="int" />
+    <Property Name="typeName" Type="nvarchar" MaxLength="100" />
+  </EntityType>
+  <EntityType Name="Rates">
+    <Key>
+      <PropertyRef Name="proID" />
+    </Key>
+    <Property Name="proID" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="rateStar" Type="int" />
+  </EntityType>
+  <EntityType Name="Sessions">
+    <Key>
+      <PropertyRef Name="id_session" />
+    </Key>
+    <Property Name="id_session" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="id_user" Type="nvarchar" MaxLength="50" />
+    <Property Name="ses" Type="nvarchar(max)" />
+    <Property Name="timeout" Type="int" />
+  </EntityType>
+  <EntityType Name="User_role">
+    <Key>
+      <PropertyRef Name="id_user" />
+    </Key>
+    <Property Name="id_user" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="tk" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="mk" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="role" Type="nvarchar" MaxLength="50" />
+    <Property Name="img" Type="nvarchar" MaxLength="50" />
+    <Property Name="name" Type="nvarchar" MaxLength="50" />
+    <Property Name="address" Type="nvarchar(max)" />
+    <Property Name="phone" Type="nvarchar" MaxLength="50" />
+    <Property Name="lock" Type="nvarchar" MaxLength="50" />
+  </EntityType>
+  <Association Name="FK__Comments__proID__48CFD27E">
+    <End Role="Products" Type="Self.Products" Multiplicity="0..1" />
+    <End Role="Comments" Type="Self.Comments" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Products">
+        <PropertyRef Name="proID" />
+      </Principal>
+      <Dependent Role="Comments">
+        <PropertyRef Name="proID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__OrderDeta__order__49C3F6B7">
+    <End Role="Orders" Type="Self.Orders" Multiplicity="1" />
+    <End Role="OrderDetails" Type="Self.OrderDetails" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Orders">
+        <PropertyRef Name="orderID" />
+      </Principal>
+      <Dependent Role="OrderDetails">
+        <PropertyRef Name="orderID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__OrderDeta__proID__4AB81AF0">
+    <End Role="Products" Type="Self.Products" Multiplicity="1" />
+    <End Role="OrderDetails" Type="Self.OrderDetails" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Products">
+        <PropertyRef Name="proID" />
+      </Principal>
+      <Dependent Role="OrderDetails">
+        <PropertyRef Name="proID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Orders__cusPhone__4BAC3F29">
+    <End Role="Customers" Type="Self.Customers" Multiplicity="0..1" />
+    <End Role="Orders" Type="Self.Orders" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Customers">
+        <PropertyRef Name="cusPhone" />
+      </Principal>
+      <Dependent Role="Orders">
+        <PropertyRef Name="cusPhone" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Products__pdcID__4CA06362">
+    <End Role="Producers" Type="Self.Producers" Multiplicity="0..1" />
+    <End Role="Products" Type="Self.Products" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Producers">
+        <PropertyRef Name="pdcID" />
+      </Principal>
+      <Dependent Role="Products">
+        <PropertyRef Name="pdcID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Products__typeID__4D94879B">
+    <End Role="ProductTypes" Type="Self.ProductTypes" Multiplicity="0..1" />
+    <End Role="Products" Type="Self.Products" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ProductTypes">
+        <PropertyRef Name="typeID" />
+      </Principal>
+      <Dependent Role="Products">
+        <PropertyRef Name="typeID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__ProductTy__cateI__4E88ABD4">
+    <End Role="Categories" Type="Self.Categories" Multiplicity="0..1" />
+    <End Role="ProductTypes" Type="Self.ProductTypes" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Categories">
+        <PropertyRef Name="cateID" />
+      </Principal>
+      <Dependent Role="ProductTypes">
+        <PropertyRef Name="cateID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Rates__proID__4F7CD00D">
+    <End Role="Products" Type="Self.Products" Multiplicity="1" />
+    <End Role="Rates" Type="Self.Rates" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="Products">
+        <PropertyRef Name="proID" />
+      </Principal>
+      <Dependent Role="Rates">
+        <PropertyRef Name="proID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Orders_User_role">
+    <End Role="User_role" Type="Self.User_role" Multiplicity="0..1" />
+    <End Role="Orders" Type="Self.Orders" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User_role">
+        <PropertyRef Name="id_user" />
+      </Principal>
+      <Dependent Role="Orders">
+        <PropertyRef Name="id_user" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Session_User_role">
+    <End Role="User_role" Type="Self.User_role" Multiplicity="0..1" />
+    <End Role="Sessions" Type="Self.Sessions" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User_role">
+        <PropertyRef Name="id_user" />
+      </Principal>
+      <Dependent Role="Sessions">
+        <PropertyRef Name="id_user" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="dataStoreContainer">
+    <EntitySet Name="Categories" EntityType="Self.Categories" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Comments" EntityType="Self.Comments" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Customers" EntityType="Self.Customers" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="OrderDetails" EntityType="Self.OrderDetails" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Orders" EntityType="Self.Orders" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Producers" EntityType="Self.Producers" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Products" EntityType="Self.Products" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="ProductTypes" EntityType="Self.ProductTypes" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Rates" EntityType="Self.Rates" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Sessions" EntityType="Self.Sessions" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="User_role" EntityType="Self.User_role" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK__Comments__proID__48CFD27E" Association="Self.FK__Comments__proID__48CFD27E">
+      <End Role="Products" EntitySet="Products" />
+      <End Role="Comments" EntitySet="Comments" />
+    </AssociationSet>
+    <AssociationSet Name="FK__OrderDeta__order__49C3F6B7" Association="Self.FK__OrderDeta__order__49C3F6B7">
+      <End Role="Orders" EntitySet="Orders" />
+      <End Role="OrderDetails" EntitySet="OrderDetails" />
+    </AssociationSet>
+    <AssociationSet Name="FK__OrderDeta__proID__4AB81AF0" Association="Self.FK__OrderDeta__proID__4AB81AF0">
+      <End Role="Products" EntitySet="Products" />
+      <End Role="OrderDetails" EntitySet="OrderDetails" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Orders__cusPhone__4BAC3F29" Association="Self.FK__Orders__cusPhone__4BAC3F29">
+      <End Role="Customers" EntitySet="Customers" />
+      <End Role="Orders" EntitySet="Orders" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Products__pdcID__4CA06362" Association="Self.FK__Products__pdcID__4CA06362">
+      <End Role="Producers" EntitySet="Producers" />
+      <End Role="Products" EntitySet="Products" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Products__typeID__4D94879B" Association="Self.FK__Products__typeID__4D94879B">
+      <End Role="ProductTypes" EntitySet="ProductTypes" />
+      <End Role="Products" EntitySet="Products" />
+    </AssociationSet>
+    <AssociationSet Name="FK__ProductTy__cateI__4E88ABD4" Association="Self.FK__ProductTy__cateI__4E88ABD4">
+      <End Role="Categories" EntitySet="Categories" />
+      <End Role="ProductTypes" EntitySet="ProductTypes" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Rates__proID__4F7CD00D" Association="Self.FK__Rates__proID__4F7CD00D">
+      <End Role="Products" EntitySet="Products" />
+      <End Role="Rates" EntitySet="Rates" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Orders_User_role" Association="Self.FK_Orders_User_role">
+      <End Role="User_role" EntitySet="User_role" />
+      <End Role="Orders" EntitySet="Orders" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Session_User_role" Association="Self.FK_Session_User_role">
+      <End Role="User_role" EntitySet="User_role" />
+      <End Role="Sessions" EntitySet="Sessions" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

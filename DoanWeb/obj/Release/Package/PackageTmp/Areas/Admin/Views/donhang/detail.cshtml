@@ -1,0 +1,109 @@
+﻿
+@{
+    ViewBag.Title = "detail";
+    Layout = "~/Areas/Admin/Views/Shared/sharelayou.cshtml";
+    data database = new data();
+}
+
+@using DoanWeb.Models;
+@model List<OrderDetails>
+<div class="main-content">
+    <section class="section">
+        <div class="section-header">
+
+            <div class="breadcrumb bg-primary text-white-all">
+                <div class="breadcrumb-item active"><a href="#">Dashboard</a></div>
+                <div class="breadcrumb-item"><a href="#">product</a></div>
+                <div class="breadcrumb-item">categories</div>
+            </div>
+        </div>
+
+        <div class="section-body">
+            <h2 class="section-title">Chi tiết đơn hàng</h2>
+            <p class="section-lead">Thông tin các sản phẩm đã đặt</p>
+
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h4></h4>
+                            <div class="card-header-action">
+                                <form>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" placeholder="Search">
+                                        <div class="input-group-btn">
+                                            <button class="btn btn-primary"><i class="fas fa-search"></i></button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="card-body p-0">
+                            <div class="table-responsive">
+                                @{ if (@ViewBag.error != null)
+                                    {
+                                        <div class="alert alert-danger alert-dismissible show fade">
+                                            <button class="close" data-dismiss="alert">
+                                                <span>×</span>
+                                            </button>
+                                            @ViewBag.error
+                                        </div>
+                                    };
+                                    if (ViewBag.thanhcong != null)
+                                    {
+                                        <div class="alert alert-success alert-dismissible show fade">
+                                            <button class="close" data-dismiss="alert">
+                                                <span>×</span>
+                                            </button>
+                                            @ViewBag.thanhcong
+                                        </div>
+                                    }
+
+                                }
+                                <table class="table table-striped" id="sortable-table">
+                                    <thead>
+                                        <tr>
+                                            <th class="text-center">
+                                                #
+                                            </th>
+                                            <th>Tên sản phẩm</th>
+                                            <th>Số lượng đặt hàng</th>
+                                            <th>Giá tiền</th>
+                                            <th>kích cỡ đặt hàng</th>
+
+
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+
+                                        <tr>
+                                            @{ var i = 1;
+                                                foreach (var od in Model)
+                                                {
+                                                    var nameod = database.Products.Where(or => or.proID == od.proID).Select(u => u.proName).FirstOrDefault();
+                                                    <td>
+                                                        @i
+
+                                                    </td>
+                                                    <td>@nameod</td>
+                                                    <td>@od.ordtsQuantity</td>
+                                                    <td>@od.ordtsThanhTien</td>
+                                                    <td>@od.size</td>
+
+                                                }
+                                            }
+                                        </tr>
+
+                                    </tbody>
+
+                                </table>
+                                <a href="@Url.Action("donhang","donhang")" class="btn btn-primary">Back</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+</div>

@@ -1,0 +1,289 @@
+﻿@using DoanWeb.Models
+
+@{
+    Layout = "~/Views/share/layout.cshtml";
+    DoanWeb.Models.data database = new DoanWeb.Models.data();
+    var cateName = "";
+
+    var productType = database.ProductTypes.FirstOrDefault(p => p.typeID == Model.typeID).cateID;
+
+    if (productType != null)
+    {
+        var category = database.Categories.FirstOrDefault(c => c.cateID == productType).cateName;
+
+        if (category != null)
+        {
+            cateName = category;
+
+        }
+
+    }
+    
+    var size_pro = HttpContext.Current.Session["size"];
+    string acc = Session["acc"] as string;
+
+}
+@model Products
+
+<!-- Header part end-->
+<!-- breadcrumb start-->
+<section class="breadcrumb breadcrumb_bg">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="breadcrumb_iner">
+                    <div class="breadcrumb_iner_item">
+                        <h2>Shop Single</h2>
+                        <p>Home <span>-</span> Shop Single</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- breadcrumb start-->
+<!--================End Home Banner Area =================-->
+<!--================Single Product Area =================-->
+<div class="product_image_area section_padding">
+    <div class="container">
+        <div class="row s_product_inner justify-content-between">
+            <div class="col-lg-7 col-xl-7">
+                <div class="product_slider_img">
+                    <div id="vertical">
+                        <div data-thumb="/public/img/product/product/@Model.proPhoto">
+                            <img src="/public/img/product/product/@Model.proPhoto" />
+                        </div>
+                        <div data-thumb="/public/img/product/product/@Model.proPhoto">
+                            <img src="/public/img/product/product/@Model.proPhoto" />
+                        </div>
+                        <div data-thumb="/public/img/product/product/@Model.proPhoto">
+                            <img src="/public/img/product/product/@Model.proPhoto" />
+                        </div>
+                        <div data-thumb="/public/img/product/product/@Model.proPhoto">
+                            <img src="/public/img/product/product/@Model.proPhoto" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-5 col-xl-4">
+                <div class="s_product_text">
+                    @{ var gia = int.Parse(Model.proPrice) - int.Parse(Model.proPrice) * Model.proDiscount / 100;
+
+
+                        <h3>@Model.proName</h3>
+                        <h3><del style="color:black">@Model.proPrice</del> Sale: <span style="color:#ff3368"> @Model.proDiscount %  </span></h3>
+                        <h2>  @gia Vnđ</h2>
+                        <ul class="list">
+                            <li>
+                                <a class="active" href="@Url.Action("nhomsanpham", "Shop", new { cateName = cateName })">
+                                    <span>Category</span> : @cateName
+                                </a>
+                            </li>
+                            <li>
+                                <a> <span>Availibility</span> : @Model.proQuantity</a>
+                            </li>
+                            <li>
+                                
+                                <div class="form-group">
+                                    <label class="form-label">Size</label>
+                                    <form action="#">
+                                        <div class="selectgroup w-100">
+                                            @{ var Size = Model.proSize.Split(',');
+                                                foreach (var s in Size)
+                                                {
+                                                    <label class="selectgroup-item">
+                                                        <input type="radio"value="@s" onclick="handleSizeChange(@s)" id="size" name="size" class="selectgroup-input" >
+                                                        <span class="selectgroup-button">@s</span>
+                                                    </label>
+                                                }
+                                            }
+                                        </div>
+                                    </form>
+                                </div>
+                            </li>
+                            <li>
+                                <p>
+                                    @Model.proDescription
+                                </p>
+                            </li>
+                        </ul>
+                        
+                        <div class="card_area d-flex justify-content-between align-items-center">
+
+                            <a href="@Url.Action("addcart", "Shop", new { proID = Model.proID, size = size_pro })" class="btn_3">add to cart</a>
+
+                        </div>
+                
+                    }
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    function handleSizeChange(selectedSize) {
+        
+        $.ajax({
+            type: "POST",
+            url: "/Shop/SaveSize", 
+            data: { size: selectedSize },
+            success: function (response) {
+                console.log("Size posted successfully");
+               
+            },
+            error: function (error) {
+                console.error("Error posting size:", error);
+            }
+        });
+    }
+</script>
+<!--================End Single Product Area =================-->
+<!--================Product Description Area =================-->
+<section class="product_description_area">
+    <div class="container">
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
+            <li class="nav-item">
+                <a class="nav-link" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home"
+                   aria-selected="true">Description</a>
+            </li>
+            
+            <li class="nav-item">
+                <a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact"
+                   aria-selected="false">Comments</a>
+            </li>
+           
+        </ul>
+        <div class="tab-content" id="myTabContent">
+            <div class="tab-pane fade" id="home" role="tabpanel" aria-labelledby="home-tab">
+               
+                <p>@Model.proDescription
+                </p>
+                
+            </div>
+          
+            <div class="tab-pane fade " id="contact" >
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="comment_list">
+                            @{ var comment = database.Comments.Where(c => c.proID == Model.proID);
+                                    foreach (var c in comment) {
+                                        var user = database.User_role.Where(u => u.id_user == c.id_user).FirstOrDefault();
+                            <div class="review_item">
+                                <div class="media">
+                                    <div class="d-flex">
+                                        <img src="~/public/img/user/@user.img" alt="@user.name" style="width:50px"/>
+                                    </div>
+                                    <div class="media-body">
+                                        <h4>@user.name</h4>
+                                        <h5>@c.datepost</h5>
+
+                                    </div>
+                                </div>
+                                <p>
+                                    @c.commentMessage
+                                </p>
+
+                            </div>
+                                    }
+                                }
+                           
+
+
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="review_box">
+
+                            <h4>Post a comment</h4>
+                            @{ if (acc != null)
+                                {
+                            <form action="@Url.Action("comme","Shop",new {proID=Model.proID })"
+                                  method="post" class="subscribe_form relative mail_part row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        
+                                        <textarea type="text" name="message" id="message" placeholder="Message" class="form-control" tabindex="1" required autofocus></textarea>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <button type="submit" class="btn btn_3 btn-primary btn-lg btn-block" tabindex="4">
+                                            submit
+                                        </button>
+                                    </div>
+                                </div>
+
+                            </form>
+                                    
+                                }
+                                else
+                                {
+
+                                    <a class="nav-link btn btn-primary" href="@Url.Action("Login","Home")">Đăng nhập để comment</a>
+                                }
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-pane fade show active" id="review" role="tabpanel" aria-labelledby="review-tab">
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="tab-pane show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+
+                            <p>
+                                @Model.proDescription
+                        </p>
+
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!--================End Product Description Area =================-->
+<!-- product_list part start-->
+<section class="product_list best_seller">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-12">
+                <div class="section_tittle text-center">
+                    <h2>Best Sellers <span>shop</span></h2>
+                </div>
+            </div>
+        </div>
+        <div class="row align-items-center justify-content-between">
+            <div class="col-lg-12">
+                <div class="best_product_slider owl-carousel">
+                    @{ 
+                            var data = database.Products.OrderByDescending(p=>p.proDiscount).Skip(0).Take(6).ToList();
+                            foreach (var products in data)
+                            {
+
+                                var sale = int.Parse(products.proPrice) * products.proDiscount / 100;
+                        <a href="@Url.Action("detail","Shop",new {proID=products.proID })">
+                            <div class="single_product_item">
+
+                                <img src="~/public/img/product/product/@products.proPhoto" alt="@products.proPhoto">
+
+                                <div class="single_product_text">
+
+                                    <h4>@products.proName</h4>
+
+                                    <h3>Gốc <del style="color:black;">@products.proPrice $</del></h3>
+                                    <h3>Sale <span style="color:#ff3368;"> @sale $ </span></h3>
+                                </div>
+
+                            </div>
+                        </a>
+
+                            } }
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- product_list part end-->

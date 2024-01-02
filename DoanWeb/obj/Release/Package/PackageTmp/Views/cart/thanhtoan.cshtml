@@ -1,0 +1,195 @@
+﻿
+@{
+    Layout = "~/Views/share/layout.cshtml";
+    DoanWeb.Models.data database = new DoanWeb.Models.data();
+}
+@using DoanWeb.Models
+
+<!-- Header part end-->
+<!--================Home Banner Area =================-->
+<!-- breadcrumb start-->
+<section class="breadcrumb breadcrumb_bg">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="breadcrumb_iner">
+                    <div class="breadcrumb_iner_item">
+                        <h2>Product Checkout</h2>
+                        <p>Home <span>-</span> Thanh toán</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- breadcrumb start-->
+<!--================Checkout Area =================-->
+<section class="checkout_area padding_top">
+    <div class="container">
+
+        <div class="cupon_area">
+            <div class="check_title">
+                <h2>
+                    Have a coupon?
+                    Click here to enter your code
+                </h2>
+            </div>
+            <input type="text" placeholder="Enter coupon code" />
+            <a class="tp_btn" href="#">Apply Coupon</a>
+        </div>
+        <form class="row contact_form" action="@Url.Action("thanhtoan", "cart")" method="post" novalidate="novalidate">
+            <div class="billing_details">
+                <div class="row">
+
+                    @{string acc = Session["acc"] as string;
+                        var users = database.User_role.Where(u => u.id_user == acc).FirstOrDefault();
+
+                        <div class="col-lg-8">
+                            <h3>Billing Details</h3>
+
+                            <div class="col-md-6 form-group p_star">
+                                <input type="text" value="@users.name" placeholder="Name" class="form-control" id="name" name="name" />
+
+                            </div>
+
+                            <div class="col-md-6 form-group p_star">
+                                <input type="text" value="@users.phone" placeholder="Number phone" class="form-control" id="phone" name="phone" />
+
+                            </div>
+                            <div class="col-md-6 form-group p_star">
+                                <input type="text" value="@users.email" placeholder="Email" class="form-control" id="email" name="email" />
+
+                            </div>
+
+                            <div class="col-md-12 form-group p_star">
+                                <input type="text" value="@users.address" placeholder="Address" class="form-control" id="add1" name="address" />
+
+                            </div>
+
+
+                            <div class="col-md-12 form-group">
+                                <textarea class="form-control" name="message" id="message" rows="1"
+                                          placeholder="Order Notes"></textarea>
+                            </div>
+
+                        </div>
+                    }
+                    @{List<Sessions> ses = database.Sessions.Where(s => s.id_user == acc).ToList();
+
+                        var tong = 0;
+                        <div class="col-lg-4">
+                            <div class="order_box">
+                                <h2>Your Order</h2>
+                                <ul class="list">
+                                    <li>
+                                        <a href="#">
+                                            Product
+                                            <span>Total</span>
+                                        </a>
+                                    </li>
+                                    @foreach (var s in ses)
+                                    {
+                                        List<Products> dulieu = database.Products.Where(p => p.proID == s.ses).ToList();
+                                        foreach (var pro in dulieu)
+                                        {
+
+                                            var gia = ((int.Parse(pro.proPrice) - ((int.Parse(pro.proPrice) * pro.proDiscount) / 100))) * s.soluong;
+                                            <li>
+                                                <a href="@Url.Action("detail", "Shop", new { proID = pro.proID })">
+                                                    @pro.proName
+                                                    <span class="middle">x @s.soluong</span>
+                                                    <span class="last">@gia VNĐ </span>
+                                                </a>
+                                            </li>
+                                            tong += gia ?? 0;
+                                        }
+
+                                    }
+
+                                </ul>
+                                <ul class="list list_2">
+                                    <li>
+                                        <a href="#">
+                                            Subtotal
+                                            <span>@tong VNĐ</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#">
+                                            Shipping
+                                            <span>Flat rate: 50000 VNĐ</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#">
+                                            Total
+                                            <span> @(tong + 50000) VNĐ</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                                <div class="payment_item">
+                                    <div class="radion_btn">
+                                        <input type="radio" id="f-option5" name="selector" />
+                                        <label for="f-option5">thanh toán khi nhận hàng</label>
+                                        <div class="check"></div>
+                                    </div>
+                                    <p style="display:none">
+                                        Kiểm tra địa chỉ trước khi thanh toán
+                                    </p>
+                                </div>
+                                <div class="payment_item active">
+                                    <div class="radion_btn">
+                                        <input type="radio" id="f-option6" name="selector" />
+                                        <label for="f-option6">Paypal </label>
+
+                                        <div class="check">
+
+                                        </div>
+                                    </div>
+                                    <p style="display:none">
+                                        <img src="~/public/img/product/new-product/n1.jpg" alt="" />
+                                        Please send a check to Store Name, Store Street, Store Town,
+                                        Store State / County, Store Postcode.
+                                    </p>
+                                </div>
+                                <script src="~/public/js/jquery-3.6.4.min.js"></script>
+
+                                <script>
+                                    $(document).ready(function () {
+
+                                        $('input[type="radio"]').change(function () {
+
+                                            if ($(this).is(':checked')) {
+
+                                                $('.payment_item p').hide();
+
+
+                                                $(this).closest('.payment_item').find('p').show();
+                                            }
+                                        });
+                                    });
+                                </script>
+
+                                <div class="creat_account">
+
+                                </div>
+                                @*<a class="btn_3" href="@Url.Action("thanhtoancart", "cart", new { name = users.name, phone = users.phone, email= users.email,address= users.address, message="ok" })">
+            PROCEED TO PAYPAL
+        </a>*@
+                                <button type="submit" class="btn_3">
+                                    PROCEED TO PAYPAL
+                                </button>
+                            </div>
+                        </div>
+
+
+                    }
+
+
+                </div>
+            </div>
+        </form>
+    </div>
+</section>
+<!--================End Checkout Area =================-->
+<!--::footer_part start::-->

@@ -1,0 +1,191 @@
+﻿
+@{
+    Layout = "~/Views/share/layout.cshtml";
+}
+
+
+@model DoanWeb.Models.productviewpage
+@{
+    DoanWeb.Models.data database = new DoanWeb.Models.data();
+    var sesss = Session["size"] as string;
+    var dem = 0;
+
+}
+
+
+<!-- Header part end-->
+<!--================Home Banner Area =================-->
+<!-- breadcrumb start-->
+<section class="breadcrumb breadcrumb_bg">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="breadcrumb_iner">
+                    <div class="breadcrumb_iner_item">
+                        <h2>Shop Category</h2>
+                        <p>Home <span>-</span> Shop Category</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- breadcrumb start-->
+<!--================Category Product Area =================-->
+<section class="cat_product_area section_padding">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-3">
+                <div class="left_sidebar_area">
+                    <aside class="left_widgets p_filter_widgets">
+                        <div class="l_w_title">
+                            <h3>Nhóm sản phẩm</h3>
+                        </div>
+                        <div class="widgets_inner">
+                            <ul class="list">
+                                @foreach (var i in database.Categories)
+                                {
+                                    <li>
+                                        <a href="@Url.Action("nhomsanpham", "Shop", new { cateName = i.cateName,page=1 })">@i.cateName</a>
+
+                                    </li>
+                                }
+
+                            </ul>
+                        </div>
+                    </aside>
+
+
+                    <aside class="left_widgets p_filter_widgets">
+                        <div class="l_w_title">
+                            <h3>Hãng sản xuất</h3>
+                        </div>
+                        <div class="widgets_inner">
+                            <ul class="list">
+                                @foreach (var i in database.Producers)
+                                {
+                                    <li>
+
+                                        <a href="@Url.Action("nhasanxuat", "Shop", new { pdcName = i.pdcName,page=1 })">@i.pdcName</a>
+                                    </li>
+                                }
+
+                                
+                            </ul>
+
+                        </div>
+                    </aside>
+
+
+
+
+                </div>
+            </div>
+            <div class="col-lg-9">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="product_top_bar d-flex justify-content-between align-items-center">
+                            <div class="single_product_menu">
+                                @if (Model != null)
+                                {
+
+                                    dem = Model.Totalproduct;
+                                    <p>Có <span>@dem</span> sản phẩm</p>
+                                }
+                                else
+                                {
+                                    <p>Có <span>0</span> sản phẩm</p>
+                                }
+                            </div>
+
+
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row align-items-center latest_product_inner">
+                    @if (Model != null)
+                    {
+                        foreach (var p in Model.Products)
+                        {
+                            if (p.hide == "Hiện")
+                            {
+                                var gia = int.Parse(p.proPrice) - int.Parse(p.proPrice) * p.proDiscount / 100;
+                                <div class="col-lg-4 col-sm-6">
+                                    <div class="single_product_item">
+                                        <a href="@Url.Action("detail", "Shop", new { proID = p.proID })">
+                                            <img src="~/public/img/product/product/@p.proPhoto" alt="@p.proPhoto">
+                                        </a>
+                                        <div class="single_product_text">
+
+                                            <h4><a href="@Url.Action("detail", "Shop", new { proID = p.proID })" style="color:black;visibility:visible;opacity: 1;font-weight: 700;font-size: 18px;">@p.proName </a></h4>
+                                            <h3>Gốc <del style="color:black;">@p.proPrice $</del></h3>
+                                            <h3>Sale <span style="color:#ff3368;"> @gia VNĐ</span></h3>
+                                            <a href="@Url.Action("addcart", "Shop", new { proID = p.proID })" class="add_cart">+ add to cart<i class="ti-heart"></i></a>
+                                        </div>
+                                    </div>
+                                </div>}
+                        }
+
+                    }
+
+                    <div class="col-lg-12">
+                        <div class="pageination">
+                            <nav aria-label="Page navigation example">
+                                <ul class="pagination justify-content-center">
+                                    @{  
+                                        var sotrang = Model.TotalPages;
+                                        if (sotrang > 1) {
+                                            for (var st = 1; st < sotrang + 1; st++)
+                                            {
+
+                                            <li class="page-item"><a class="page-link" href="@Url.Action("product", "Shop", new { page = st })">@st</a></li>
+                                                }
+
+
+                                            } 
+                                        }
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!--================End Category Product Area =================-->
+<!-- product_list part start-->
+<section class="product_list best_seller">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-12">
+                <div class="section_tittle text-center">
+                    <h2>Best Sellers <span>shop</span></h2>
+                </div>
+            </div>
+        </div>
+        <div class="row align-items-center justify-content-between">
+            <div class="col-lg-12">
+                <div class="best_product_slider owl-carousel">
+                    @foreach (var pro in database.Products.Where(p => p.proDiscount > 6).ToList())
+                    {
+                        var gia = int.Parse(pro.proPrice) - int.Parse(pro.proPrice) * pro.proDiscount / 100;
+                        <a href="@Url.Action("detail", "Shop", new { proID = pro.proID})">
+                            <div class="single_product_item">
+                                <img src="~/public/img/product/product/@pro.proPhoto" alt="">
+                                <div class="single_product_text">
+                                    <h4>@pro.proName</h4>
+                                    <h3>Gốc:  <del>@pro.proPrice VNĐ</del> </h3>
+                                    <h3>sale: @gia VNĐ</h3>
+                                </div>
+                            </div>
+                        </a>
+                    }
+                </div>
+
+            </div>
+        </div>
+    </div>
+</section>

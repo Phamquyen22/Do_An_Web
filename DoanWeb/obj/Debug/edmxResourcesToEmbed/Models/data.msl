@@ -1,0 +1,127 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="dataStoreContainer" CdmEntityContainer="ShopperEntities">
+    <EntitySetMapping Name="Categories">
+      <EntityTypeMapping TypeName="data.Categories">
+        <MappingFragment StoreEntitySet="Categories">
+          <ScalarProperty Name="cateID" ColumnName="cateID" />
+          <ScalarProperty Name="cateName" ColumnName="cateName" />
+          <ScalarProperty Name="catePhoto" ColumnName="catePhoto" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Comments">
+      <EntityTypeMapping TypeName="data.Comments">
+        <MappingFragment StoreEntitySet="Comments">
+          <ScalarProperty Name="commentID" ColumnName="commentID" />
+          <ScalarProperty Name="proID" ColumnName="proID" />
+          <ScalarProperty Name="commentMessage" ColumnName="commentMessage" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Customers">
+      <EntityTypeMapping TypeName="data.Customers">
+        <MappingFragment StoreEntitySet="Customers">
+          <ScalarProperty Name="cusPhone" ColumnName="cusPhone" />
+          <ScalarProperty Name="cusFullName" ColumnName="cusFullName" />
+          <ScalarProperty Name="cusEmail" ColumnName="cusEmail" />
+          <ScalarProperty Name="cusAddress" ColumnName="cusAddress" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="OrderDetails">
+      <EntityTypeMapping TypeName="data.OrderDetails">
+        <MappingFragment StoreEntitySet="OrderDetails">
+          <ScalarProperty Name="orderID" ColumnName="orderID" />
+          <ScalarProperty Name="proID" ColumnName="proID" />
+          <ScalarProperty Name="ordtsQuantity" ColumnName="ordtsQuantity" />
+          <ScalarProperty Name="ordtsThanhTien" ColumnName="ordtsThanhTien" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Orders">
+      <EntityTypeMapping TypeName="data.Orders">
+        <MappingFragment StoreEntitySet="Orders">
+          <ScalarProperty Name="orderID" ColumnName="orderID" />
+          <ScalarProperty Name="cusPhone" ColumnName="cusPhone" />
+          <ScalarProperty Name="orderMessage" ColumnName="orderMessage" />
+          <ScalarProperty Name="orderDateTime" ColumnName="orderDateTime" />
+          <ScalarProperty Name="orderStatus" ColumnName="orderStatus" />
+          <ScalarProperty Name="id_user" ColumnName="id_user" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Producers">
+      <EntityTypeMapping TypeName="data.Producers">
+        <MappingFragment StoreEntitySet="Producers">
+          <ScalarProperty Name="pdcID" ColumnName="pdcID" />
+          <ScalarProperty Name="pdcName" ColumnName="pdcName" />
+          <ScalarProperty Name="pdcPhone" ColumnName="pdcPhone" />
+          <ScalarProperty Name="pdcEmail" ColumnName="pdcEmail" />
+          <ScalarProperty Name="pdcAddress" ColumnName="pdcAddress" />
+          <ScalarProperty Name="pdcPhoto" ColumnName="pdcPhoto" />
+          <ScalarProperty Name="pdcInfo" ColumnName="pdcInfo" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Products">
+      <EntityTypeMapping TypeName="data.Products">
+        <MappingFragment StoreEntitySet="Products">
+          <ScalarProperty Name="proID" ColumnName="proID" />
+          <ScalarProperty Name="pdcID" ColumnName="pdcID" />
+          <ScalarProperty Name="typeID" ColumnName="typeID" />
+          <ScalarProperty Name="proName" ColumnName="proName" />
+          <ScalarProperty Name="proSize" ColumnName="proSize" />
+          <ScalarProperty Name="proPrice" ColumnName="proPrice" />
+          <ScalarProperty Name="proDiscount" ColumnName="proDiscount" />
+          <ScalarProperty Name="proPhoto" ColumnName="proPhoto" />
+          <ScalarProperty Name="proUpdateDate" ColumnName="proUpdateDate" />
+          <ScalarProperty Name="proDescription" ColumnName="proDescription" />
+          <ScalarProperty Name="proQuantity" ColumnName="proQuantity" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ProductTypes">
+      <EntityTypeMapping TypeName="data.ProductTypes">
+        <MappingFragment StoreEntitySet="ProductTypes">
+          <ScalarProperty Name="typeID" ColumnName="typeID" />
+          <ScalarProperty Name="cateID" ColumnName="cateID" />
+          <ScalarProperty Name="typeName" ColumnName="typeName" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Rates">
+      <EntityTypeMapping TypeName="data.Rates">
+        <MappingFragment StoreEntitySet="Rates">
+          <ScalarProperty Name="proID" ColumnName="proID" />
+          <ScalarProperty Name="rateStar" ColumnName="rateStar" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Sessions">
+      <EntityTypeMapping TypeName="data.Sessions">
+        <MappingFragment StoreEntitySet="Sessions">
+          <ScalarProperty Name="id_session" ColumnName="id_session" />
+          <ScalarProperty Name="id_user" ColumnName="id_user" />
+          <ScalarProperty Name="ses" ColumnName="ses" />
+          <ScalarProperty Name="timeout" ColumnName="timeout" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="User_role">
+      <EntityTypeMapping TypeName="data.User_role">
+        <MappingFragment StoreEntitySet="User_role">
+          <ScalarProperty Name="id_user" ColumnName="id_user" />
+          <ScalarProperty Name="tk" ColumnName="tk" />
+          <ScalarProperty Name="mk" ColumnName="mk" />
+          <ScalarProperty Name="role" ColumnName="role" />
+          <ScalarProperty Name="img" ColumnName="img" />
+          <ScalarProperty Name="name" ColumnName="name" />
+          <ScalarProperty Name="address" ColumnName="address" />
+          <ScalarProperty Name="phone" ColumnName="phone" />
+          <ScalarProperty Name="lock" ColumnName="lock" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>

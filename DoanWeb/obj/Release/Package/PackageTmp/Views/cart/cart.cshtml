@@ -1,0 +1,168 @@
+﻿
+@{
+    Layout = "~/Views/share/layout.cshtml";
+    DoanWeb.Models.data database = new DoanWeb.Models.data();
+    int? grandTotal = 0;
+}
+@using DoanWeb.Models
+@model List<string>
+<!-- Header part end-->
+<!--================Home Banner Area =================-->
+<!-- breadcrumb start-->
+<section class="breadcrumb breadcrumb_bg">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="breadcrumb_iner">
+                    <div class="breadcrumb_iner_item">
+                        <h2>Cart Products</h2>
+                        <p>Home <span>-</span>Cart Products</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- breadcrumb start-->
+<!--================Cart Area =================-->
+<section class="cart_area padding_top">
+    <div class="container">
+        <div class="cart_inner">
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">Product</th>
+                            <th scope="col">Price</th>
+                            <th scope="col">Quantity</th>
+                            <th scope="col">Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model != null)
+                        {
+                            foreach (var pro in Model)
+                            {
+                                Products dulieu = database.Products.Where(p => p.proID == pro).FirstOrDefault();
+
+                                var gia = int.Parse(dulieu.proPrice) - (int.Parse(dulieu.proPrice) + dulieu.proDiscount) / 100;
+
+                                var slg = database.Sessions.Where(p => p.ses == pro).FirstOrDefault();
+                                int soluong = (slg != null) ? slg.soluong ?? 1 : 1;
+                                var tong = gia * soluong;
+                                grandTotal = soluong * gia;
+                                <tr>
+                                    <td>
+                                        <div class="media">
+                                            <div class="d-flex">
+                                                <img src="~/public/img/product/@dulieu.proPhoto" style="height:80px " alt="" />
+                                            </div>
+                                            <div class="media-body">
+                                                <p>@dulieu.proName</p>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <h5 class="price">@gia</h5>
+                                    </td>
+                                    <td>
+                                        <div class="product_count">
+                                            <input class="input-number" type="number" value="@soluong" min="0" max="10" data-proid="@dulieu.proID" />
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <h5 class="total-price" data-total="@gia">@tong</h5>
+                                    </td>
+                                    <td>
+                                        <div class="cupon_text float-right">
+                                            <a class="btn_1" href="@Url.Action("delete_cart", "cart",new { proId=pro})">Delete</a>
+                                        </div>
+                                    </td>
+
+
+
+                                </tr>
+
+
+
+
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+                                <td> <h3>Giỏ Hàng Rỗng</h3></td>
+                                <td> </td>
+                                <td> </td>
+                                <td> </td>
+                            </tr>
+                        }
+                        <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+                        <script>
+                            $(document).ready(function () {
+                                var grandTotal = 0;
+                                $('.input-number').on('input', function () {
+                                    var quantity = parseInt($(this).val(), 10);
+                                    var proID = $(this).data('proid');
+                                    var price = parseFloat($(this).closest('tr').find('.price').text());
+
+                                    // Calculate the new total price
+                                    var total = quantity * price;
+                                    grandTotal += total;
+                                    $(this).closest('tr').find('.total-price').text(total);
+                                    $('#grandTotalDisplay').text('Total: ' + grandTotal+' VNĐ');
+                                    // Make an AJAX call to update the quantity on the server
+                                    $.ajax({
+                                        url: '@Url.Action("UpdateQuantity", "cart")',
+                                        type: 'POST',
+                                        data: { proID: proID , quantity: quantity },
+                                        success: function (result) {
+                                            if (result.success) {
+                                                console.log("ok");
+                                            } else {
+                                                // Handle errors if needed
+                                                console.log("no");
+                                            }
+                                        },
+                                        error: function () {
+
+                                        }
+                                    });
+                                });
+                                });
+
+                        </script>
+
+                        <tr class="bottom_button">
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td>
+                                @*<div class="cupon_text float-right">
+                                    <a class="btn_1" href="#">voucher</a>
+                                </div>*@
+                            </td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td>
+                                <h5 id="grandTotalDisplay">Total: @grandTotal</h5>
+                            </td>
+                        </tr>
+
+                    </tbody>
+                </table>
+                <div class="checkout_btn_inner float-right">
+                    <a class="btn_1" href="@Url.Action("Index","Home")">Continue Shopping</a>
+                    <a class="btn_1 checkout_btn_1" href="@Url.Action("thanhtoan","cart")">Proceed to checkout</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+        </section>
+<!--================End Cart Area =================-->
+<!--::footer_part start::-->
